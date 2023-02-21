@@ -14,9 +14,9 @@ public class Calculator {
     private double b;
     
     // Constructor 
-    public Calculator(String a,String b) {
-        this.a = Double.parseDouble(a);
-        this.b = Double.parseDouble(b);
+    public Calculator(double a, double b) {
+        this.a = a;
+        this.b = b;
     }
     
     // Functions, operations
@@ -27,13 +27,12 @@ public class Calculator {
         return a - b;
     }
     public double multipy() {
-        return a - b;
+        return a * b;
     }
     public double divide () {
-        if (b == 0) {
-            return 0;
-        }
-        return a / b;
+        
+        return b == 0 ? 0 : a / b;
+        
     }
     public double pow () {
         return Math.pow(a, b);

@@ -24,6 +24,7 @@ public class calculator_ws {
      * @param option
      * @return 
      */
+    
     public boolean validate(String a, String b, String option) {
         
         // Check if any parameter is null
@@ -46,7 +47,7 @@ public class calculator_ws {
             return "Check your parameters";
         } else {
             // object calculator
-            Calculator c = new Calculator(a,b);
+            Calculator c = new Calculator(Double.parseDouble(a),Double.parseDouble(b));
             switch(option) {
                 case "+": res = c.add(); break;
                 case "-": res = c.subtract(); break;
