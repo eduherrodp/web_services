@@ -34,4 +34,5 @@ public class ConexionMySQL {
     public Connection obtenerConexion() {
         return conexion;
     }
+
 }
