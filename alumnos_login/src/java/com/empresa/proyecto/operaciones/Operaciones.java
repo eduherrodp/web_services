@@ -29,8 +29,8 @@ public class Operaciones implements Servicios{
             while(rs.next()){
                 Datos d = new Datos();
                 d.setId(rs.getInt("id"));
-                d.setUser(rs.getString("user"));
-                d.setPass(rs.getString("pass"));
+                d.setUser(rs.getString("User"));
+                d.setPass(rs.getString("Pass"));
                 dat.add(d);
             }
         }
@@ -41,44 +41,48 @@ public class Operaciones implements Servicios{
     }
 
     
-    @Override
-    public List<Datos> ListarID(int id) {
-        String sql = "SELECT a.id, a.user, a.pass, b.nombre, b.apellido_p, b.apellido_m, b.mail " +
-                "FROM usuarios a JOIN user_detalle b ON b.id = a.id WHERE a.id = ?";
-        List<Datos> datosList = new ArrayList<>();
-
+   @Override
+    public List ListarID(int Id) {
+        List<Datos> dat = new ArrayList();
+        String sql = "SELECT a.id, a.user, a.pass, b.nombre, b.apellido_p, b.apellido_m, b.mail FROM usuarios A" +
+                "join user_detalle B on B.id = A.id where A.id = " + Id;
+        
+        int Control = 0;
+        String msg = "";
+        
         try {
             con = conn.getConection();
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    Datos d = new Datos();
-                    d.setId(rs.getInt("id"));
-                    d.setUser(rs.getString("user"));
-                    d.setPass(rs.getString("pass"));
-                    d.setNombre(rs.getString("nombre"));
-                    d.setApellido_p(rs.getString("apellido_p"));
-                    d.setApellido_M(rs.getString("apellido_m"));
-                    d.setMail(rs.getString("mail"));
-                    datosList.add(d);
-                } else {
-                    Datos d = new Datos();
-                    d.setId(id);
-                    d.setMensaje("ID no existe");
-                    datosList.add(d);
-                }
+            ps = con.prepareStatement(sql);
+            rs = ps.executeQuery();
+            if(rs.last()) {
+               Control = rs.getRow();
             }
-        } catch (SQLException e) {
+            Datos d = new Datos();
+            if(Control > 0){
+                d.setId(rs.getInt("id"));
+                d.setUser(rs.getString("User"));
+                d.setPass(rs.getString("Pass"));
+                d.setNombre(rs.getString("nombre"));
+                d.setApellido_p(rs.getString("apellido_p"));
+                d.setApellido_M(rs.getString("apellido_m"));
+                d.setMail(rs.getString("mail"));
+            }
+            else {
+                d.setId(Id);
+                d.setMensaje("ID no Existe");
+            }
+            dat.add(d);
         }
-        return datosList;
+        catch(SQLException e){
+        }      
+       return dat;
     }
 
 
     @Override
     public String add(int Id, String User, String Pass, String Nombre, String Apellido_P, String Apellido_M, String Mail) {
-        String query = "INSERT INTO usuarios (id, user, pass) VALUES("+ Id + ", '" + User + "', '" + Pass + "')";
-        String query1 = "INSERT INTO user_detalle (id, nombre, apellido_p, apellido_m, mail) "
+        String query = "INSERT INTO usuarios (id, 'user', 'pass') VALUES("+ Id + ", '" + User + "', '" + Pass + "')";
+        String query1 = "INSERT INTO user_detalle (id, 'nombre', 'apellido_p', 'apellido_m', 'mail') "
                 + "VALUES(" + Id + ", '" + Nombre + "', '" + Apellido_P + "', '" + Apellido_M + "', '" + Mail + "' )";
        String msg = "";
        
@@ -89,11 +93,13 @@ public class Operaciones implements Servicios{
           ps.executeUpdate();
           ps = con.prepareStatement(query1);
           ps.executeUpdate();
-          msg = "Se agrego el ID " + Id;
+          msg = "Se agrego el Id" + Id;
         }
-        catch(SQLException e){ 
-            msg = "Error insertando datos " + e.getLocalizedMessage();
+        catch(Exception e){   
         }
         return msg;
     }
-}
+
+
+    }
+
