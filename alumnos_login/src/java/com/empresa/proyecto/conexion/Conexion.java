@@ -17,7 +17,7 @@ public class Conexion {
         }
     }
     
-    public Connection getConection(){
+    public Connection getConecction(){
         System.out.print("Se conecto a la abse de datos");
         return con;
     }
