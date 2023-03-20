@@ -19,8 +19,8 @@ public class BDWS {
     
     @WebMethod(operationName = "listarID")
     public List<Datos> listarID(@WebParam(name = "id") int id) {
-       List reg = oper.ListarID(id);
-       return reg;
+        List reg = oper.ListarID(id);
+        return reg;
     }
     
     @WebMethod(operationName = "Agregar")
